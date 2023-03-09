@@ -1,5 +1,5 @@
 ---
-- name: "roles/langs.php/tasks/main: Install PHP 8.0.9 from xbuild"
+- name: 'roles/langs.php/tasks/main: Install PHP 8.0.9 from xbuild'
   become_user: isucon
   args:
     chdir: /home/isucon
@@ -12,13 +12,12 @@
     --enable-sysvsem --enable-sysvshm --enable-sysvmsg --enable-mbregex
     --enable-mbstring --enable-pcntl --enable-sockets --with-curl --enable-zip
   environment:
-    PHP_BUILD_EXTRA_MAKE_ARGUMENTS: "-j {{ ansible_processor_vcpus }}"
+    PHP_BUILD_EXTRA_MAKE_ARGUMENTS: '-j {{ ansible_processor_vcpus }}'
 
-- name: "roles/langs.php/tasks/main: Add PATH for PHP"
+- name: 'roles/langs.php/tasks/main: Add PATH for PHP'
   become_user: isucon
   blockinfile:
-    marker: "# {mark} ANSIBLE MANAGED BLOCK php"
+    marker: '# {mark} ANSIBLE MANAGED BLOCK php'
     dest: /home/isucon/.bashrc
     content: |
       export PATH=/home/isucon/local/php/bin:$PATH
-

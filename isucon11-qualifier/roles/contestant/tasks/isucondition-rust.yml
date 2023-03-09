@@ -1,9 +1,9 @@
 ---
-- name: "roles/contestant/tasks/isucondition-rust: Build Web Application Rust"
+- name: 'roles/contestant/tasks/isucondition-rust: Build Web Application Rust'
   become_user: isucon
   args:
     chdir: /home/isucon/webapp/rust
   environment:
-    PATH: "/home/isucon/.cargo/bin:{{ ansible_env.PATH }}"
+    PATH: '/home/isucon/.cargo/bin:{{ ansible_env.PATH }}'
   shell: |
-    cargo build --locked --release
+    cargo +1.54.0 build --locked --release

@@ -1,29 +1,29 @@
 ---
-- name: "roles/contestant/tasks/nginx: Install package"
+- name: 'roles/contestant/tasks/nginx: Install package'
   apt:
     name:
-    - nginx
+      - nginx
     update_cache: yes
 
-- name: "roles/contestant/tasks/nginx: Mkdir for certificates"
+- name: 'roles/contestant/tasks/nginx: Mkdir for certificates'
   file:
     path: /etc/nginx/certificates
     state: directory
     mode: 0755
 
-- name: "roles/contestant/tasks/nginx: Deploy nginx configs"
+- name: 'roles/contestant/tasks/nginx: Deploy nginx configs'
   copy:
-    src: "{{ item }}"
-    dest: "/{{ item }}"
-    owner: "root"
-    group: "root"
-    mode: "0644"
+    src: '{{ item }}'
+    dest: '/{{ item }}'
+    owner: 'root'
+    group: 'root'
+    mode: '0644'
   with_items:
-  - etc/nginx/nginx.conf
-  - etc/nginx/sites-available/isucondition.conf
-  - etc/nginx/sites-available/isucondition-php.conf
+    - etc/nginx/nginx.conf
+    - etc/nginx/sites-available/isucondition.conf
+    - etc/nginx/sites-available/isucondition-php.conf
 
-- name: "roles/contestant/tasks/nginx: Generate certificates"
+- name: 'roles/contestant/tasks/nginx: Generate certificates'
   shell: |
     openssl req -subj '/CN=*.t.isucon.dev' -nodes -newkey rsa:2048 -keyout tls-key.pem -out tls-csr.pem
     echo "basicConstraints=critical,CA:true,pathlen:0\nsubjectAltName=DNS.1:*.t.isucon.dev" > tls-extfile.txt
@@ -37,21 +37,26 @@
     chdir: /etc/nginx/certificates
     creates: /usr/share/ca-certificates/isucon/tls-cert.crt
 
-- name: "roles/contestant/tasks/nginx: Enable isucondition.conf"
+- name: 'roles/contestant/tasks/nginx: Enable isucondition.conf'
   file:
     path: /etc/nginx/sites-enabled/isucondition.conf
     src: /etc/nginx/sites-available/isucondition.conf
     state: link
 
-- name: "roles/contestant/tasks/nginx: Delete default config"
+- name: 'roles/contestant/tasks/nginx: Delete default config'
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
 
-- name: "roles/contestant/tasks/nginx: Start nginx"
+- name: 'roles/contestant/tasks/nginx: Stop Apache'
   systemd:
-    daemon_reload: "yes"
-    name: "nginx"
-    state: "reloaded"
-    enabled: "yes"
+    name: 'apache2'
+    state: 'stopped'
+    enabled: 'no'
 
+- name: 'roles/contestant/tasks/nginx: Start nginx'
+  systemd:
+    daemon_reload: 'yes'
+    name: 'nginx'
+    state: 'reloaded'
+    enabled: 'yes'

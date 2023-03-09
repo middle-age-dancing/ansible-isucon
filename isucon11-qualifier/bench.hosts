@@ -1,2 +1,5 @@
 [bench]
-127.0.0.1
+docker_ansible_thomas
+
+[bench:vars]
+ansible_python_interpreter=/usr/bin/python3
