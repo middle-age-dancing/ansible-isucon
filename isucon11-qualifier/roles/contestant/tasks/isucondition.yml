@@ -8,11 +8,12 @@
     owner: isucon
     group: isucon
 
-- name: "roles/contestant/tasks/isucondition: Deploy hosts"
-  become_user: root
-  copy:
-    src: "etc/hosts"
-    dest: "/etc/hosts"
+# see: https://github.com/ansible-community/molecule/issues/959
+# - name: "roles/contestant/tasks/isucondition: Deploy hosts"
+#   become_user: root
+#   copy:
+#     src: "etc/hosts"
+#     dest: "/etc/hosts"
 
 - name: "roles/contestant/tasks/isucondition: Include generate_env.yml"
   include: generate_env.yml
