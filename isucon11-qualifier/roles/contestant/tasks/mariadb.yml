@@ -19,6 +19,12 @@
       user = root
       password = root
 
+- name: Start MySQL service
+  ansible.builtin.systemd:
+    name: mysql
+    state: started
+  become: true
+
 - name: "roles/contestant/tasks/mariadb: Create isucon user on MariaDB"
   become_user: root
   shell: >
