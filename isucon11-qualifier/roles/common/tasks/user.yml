@@ -59,6 +59,7 @@
 
 - name: "roles/common/tasks/user: Create .ssh directory for isucon-admin user"
   become_user: isucon-admin
+  become: true
   file:
     path: /home/isucon-admin/.ssh
     state: directory
